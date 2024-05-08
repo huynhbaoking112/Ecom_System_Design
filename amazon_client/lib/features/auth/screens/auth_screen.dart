@@ -37,6 +37,12 @@ class _AuthScreenState extends State<AuthScreen> {
      authService.signUpUser(context: context, email: emailController.text, password: passwordController.text, name: usernameController.text);
   }
 
+
+  //signup function
+  void signInUser(){
+    authService.signInUser(email: emailController.text, password: passwordController.text, context: context);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -215,7 +221,11 @@ class _AuthScreenState extends State<AuthScreen> {
                               const SizedBox(height: 10,),
 
                               //Button Sign Up
-                              MyButtonCustom(text: "Sign up", onPressedButton: (){},)
+                              MyButtonCustom(text: "Sign in", onPressedButton: (){
+                                if(keyField.currentState!.validate()){
+                                  signInUser();
+                                }
+                              },)
 
                             ],
                           ),

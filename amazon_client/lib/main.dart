@@ -1,14 +1,21 @@
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/features/auth/screens/auth_screen.dart';
+import 'package:amazon_client/features/auth/services/auth_service.dart';
+import 'package:amazon_client/providers/user_provider.dart';
 import 'package:amazon_client/router.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => UserProvider(),)
+    ],
+    child:  MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,32 @@ class MyApp extends StatelessWidget {
         
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: AuthScreen()
+      home: StartScreen()
     );
+  }
+}
+
+class StartScreen extends StatefulWidget {
+  const StartScreen({super.key});
+
+  @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+
+   AuthService authService = AuthService();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    authService.getUserData(context: context);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return  AuthScreen();
   }
 }

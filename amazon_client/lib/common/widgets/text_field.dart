@@ -12,10 +12,10 @@ class TextFieldCustom extends StatelessWidget {
   final String? Function(String?)? validator;
 
   const TextFieldCustom({
-    Key? key,
+    Key? key,       
     required this.controllerText,
     required this.hintText,
-    required this.pass,
+    required this.pass,                       
     required this.validator,
   }) : super(key: key);
 
