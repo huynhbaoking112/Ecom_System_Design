@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:amazon_client/constants/error_handling.dart';
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/constants/utils.dart';
+import 'package:amazon_client/common/widgets/bottom_screen.dart';
 import 'package:amazon_client/features/home/screens/home_screen.dart';
 import 'package:amazon_client/models/user.dart';
 import 'package:amazon_client/providers/user_provider.dart';
@@ -31,7 +32,7 @@ class AuthService {
             Provider.of<UserProvider>(context, listen: false).setUser(res.body);
             await prefs.setString(
                 'x-auth-token', json.decode(res.body)['token']);
-            Navigator.pushNamed(context, HomePage.routeName);
+            Navigator.pushNamed(context, BottomBar.routeName);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -58,7 +59,6 @@ class AuthService {
 
       httpErrorHandle(response: res, context: context, onSuccess: () async {
         Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-        Navigator.pushNamed(context, HomePage.routeName);
       });
 
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:amazon_client/constants/global_variables.dart';
+import 'package:amazon_client/features/Admin/screens/admin_screen.dart';
 import 'package:amazon_client/features/auth/screens/auth_screen.dart';
 import 'package:amazon_client/features/auth/services/auth_service.dart';
 import 'package:amazon_client/providers/user_provider.dart';
@@ -60,6 +61,6 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  AuthScreen();
+    return  Provider.of<UserProvider>(context).user.token.isNotEmpty?Provider.of<UserProvider>(context).user.type=="user"?BottomAppBar():AdminScreen():AuthScreen();
   }
 }

@@ -28,11 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  file_picker:
+  dotted_border: ^2.1.0
+  carousel_slider:
+  badges: ^3.1.2
   shared_preferences:
   provider:
   http:
   flutter:
-    sdk: flutter
+    sdk: flutter   
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,8 +66,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

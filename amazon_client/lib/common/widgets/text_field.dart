@@ -10,6 +10,7 @@ class TextFieldCustom extends StatelessWidget {
   final String hintText;
   final bool pass;
   final String? Function(String?)? validator;
+  final int maxLines;
 
   const TextFieldCustom({
     Key? key,       
@@ -17,12 +18,14 @@ class TextFieldCustom extends StatelessWidget {
     required this.hintText,
     required this.pass,                       
     required this.validator,
+    this.maxLines = 1
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controllerText,
+      maxLines: maxLines,
       decoration: InputDecoration(
         hintText: hintText,
         constraints: BoxConstraints(minHeight: 50, minWidth: double.infinity),
