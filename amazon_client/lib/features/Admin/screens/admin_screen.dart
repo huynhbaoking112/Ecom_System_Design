@@ -5,6 +5,7 @@ import 'package:badges/badges.dart' as badges;
 
 
 class AdminScreen extends StatefulWidget {
+  static const String routeName = '/adminScreen';
   const AdminScreen({super.key});
 
   @override

@@ -1,4 +1,5 @@
 import 'package:amazon_client/constants/global_variables.dart';
+import 'package:amazon_client/features/account/widgets/single_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -48,19 +49,7 @@ class _YourOrderState extends State<YourOrder> {
             scrollDirection: Axis.horizontal,
             itemCount: allProducts.length,
             itemBuilder: (context, index){
-              return Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                margin: EdgeInsets.only(left: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12, width: 1.5),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                width: 180,
-                height: 170,
-                child: Container(
-                  child: Image.network(allProducts[index], fit: BoxFit.fitHeight,),
-                ),
-              );
+              return SingleProduct(url: allProducts[index]);
             },
           ),
         )      

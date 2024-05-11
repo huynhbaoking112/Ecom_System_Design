@@ -4,6 +4,7 @@ import 'package:amazon_client/common/widgets/button_custom.dart';
 import 'package:amazon_client/common/widgets/text_field.dart';
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/constants/utils.dart';
+import 'package:amazon_client/features/Admin/services/admin_service.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,14 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+
+  //Admin Service
+  final AdminServices adminServices = AdminServices();
+
+
+  //ProductFormGlobalKey
+  final _addProductFormKey = GlobalKey<FormState>();
+
   //product
   TextEditingController productController = TextEditingController();
 
@@ -63,11 +72,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
     });
   }
 
+
+  //deleteChooseImage
   void deleteChooseImage(int index){
    setState(() {
       allFileChoose.removeAt(index);
    });
   }
+
+  void sellProduct()  {
+      adminServices.sellProduct(context: context, name: productController.text, description: descriptionController.text, price: double.parse(priceController.text), quantity: double.parse(quantityController.text), category: valueChoose, images: allFileChoose);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +106,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _addProductFormKey, 
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Column(
@@ -115,11 +133,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return Stack(
                                 children: [
                                   //Image choose
-                                  Image.file(
-                                    File(allFileChoose[index].path),
-                                    height: 150,
-                                    width: 120,
-                                    fit: BoxFit.fitHeight,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.file(
+                                      File(allFileChoose[index].path),
+                                      height: 150,
+                                      width: 120,
+                                      fit: BoxFit.fitHeight,
+                                    ),
                                   ),
 
                                   //deleteChoose
@@ -196,7 +217,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                 //description field
                 TextFieldCustom(
-                  controllerText: productController,
+                  controllerText: descriptionController,
                   hintText: 'Description',
                   pass: false,
                   validator: (val) {
@@ -214,7 +235,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                 //Price field
                 TextFieldCustom(
-                    controllerText: productController,
+                    controllerText: priceController,
                     hintText: 'Price',
                     pass: false,
                     validator: (val) {
@@ -233,14 +254,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                 //Quantity field
                 TextFieldCustom(
-                    controllerText: productController,
+                    controllerText: quantityController,
                     hintText: 'Quantity',
                     pass: false,
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return 'Vui lòng nhập Quantity';
                       }
-                      if (int.tryParse(val) == null) {
+                      if (double.tryParse(val) == null) {
                         return 'Quantity phải là số nguyên';
                       }
                       return null;
@@ -281,7 +302,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
 
                 //Button
-                MyButtonCustom(text: "Shell", onPressedButton: () {}),
+                MyButtonCustom(text: "Shell", onPressedButton: () {
+                  if(_addProductFormKey.currentState!.validate() || allFileChoose.isNotEmpty){
+                    sellProduct();
+                  }
+                }),
 
                 const SizedBox(
                   height: 20,

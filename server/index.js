@@ -16,12 +16,12 @@ ConnectDB();
 
 //Router
 const authRouter = require("./routes/auth_router")
-
+const adminRouter = require("./routes/admin_router")
 
 
 //Use Router
 app.use("/user", authRouter)
-
+app.use("/api", adminRouter)
 
 
 
