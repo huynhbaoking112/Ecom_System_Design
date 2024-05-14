@@ -1,7 +1,7 @@
 const express = require("express");
 const { handleToken } = require("../middlewares/get_id_token");
 const { checkAdmin } = require("../middlewares/admin");
-const { addProduct, getProduct } = require("../controllers/admin_controller");
+const { addProduct, getProduct, deleteProduct } = require("../controllers/admin_controller");
 const adminRouter = express.Router();
 
 
@@ -12,8 +12,10 @@ adminRouter.route("/admin/add-product").post(handleToken, checkAdmin, addProduct
 
 
 //get product
-adminRouter.route("/admin/get-product").get(handleToken, checkAdmin, getProduct)
-
+adminRouter.route("/admin/get-product")
+.get(handleToken, checkAdmin, getProduct)
+//DeleteProduct
+.post(handleToken, checkAdmin, deleteProduct)
 
 
 module.exports = adminRouter;

@@ -1,4 +1,5 @@
 import 'package:amazon_client/constants/global_variables.dart';
+import 'package:amazon_client/features/home/screens/category_deal.dart';
 import 'package:flutter/material.dart';
 
 class CategoriresTop extends StatefulWidget {
@@ -19,23 +20,28 @@ class _CategoriresTopState extends State<CategoriresTop> {
            itemExtent: 80,
         itemCount: GlobalVariables.categoryImages.length,
         itemBuilder: (context, index) {
-          return  Container(
-            child: Column(
-              children: [
-
-                //Image
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ClipRRect(borderRadius: BorderRadius.circular(50),child: Image.asset(GlobalVariables.categoryImages[index]["image"]!, fit: BoxFit.cover, height: 50, width: 50,)),
-                ),
-
-                SizedBox(height: 10,),
-
-                //Title
-                Text(GlobalVariables.categoryImages[index]['title']!, style: TextStyle(
-
-                ),),
-              ],
+          return  GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, CategoryDeal.routeName, arguments: GlobalVariables.categoryImages[index]['title']);
+            },
+            child: Container(
+              child: Column(
+                children: [
+            
+                  //Image
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ClipRRect(borderRadius: BorderRadius.circular(50),child: Image.asset(GlobalVariables.categoryImages[index]["image"]!, fit: BoxFit.cover, height: 50, width: 50,)),
+                  ),
+            
+                  SizedBox(height: 10,),
+            
+                  //Title
+                  Text(GlobalVariables.categoryImages[index]['title']!, style: TextStyle(
+            
+                  ),),
+                ],
+              ),
             ),
           );
         },

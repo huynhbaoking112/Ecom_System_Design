@@ -34,6 +34,16 @@ class _PostPageState extends State<PostPage> {
     setState(() {});
   }
 
+
+  //delete product
+  void deleteProduct(Product product, int index){
+    adminServices.deleteProduct(context: context, product: product, onSuccess: (){
+        setState(() {
+          allProduct!.removeAt(index);
+        });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return allProduct == null
@@ -101,8 +111,12 @@ class _PostPageState extends State<PostPage> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
+
+                                //Icon Delete Butoon
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    deleteProduct(allProduct![index], index);
+                                  },
                                   icon: const Icon(
                                     Icons.delete_outline,
                                     size: 25,

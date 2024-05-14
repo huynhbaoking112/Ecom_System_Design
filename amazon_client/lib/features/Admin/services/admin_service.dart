@@ -13,11 +13,14 @@ import 'package:amazon_client/providers/user_provider.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminServices {
+
+  //Sell Product
   void sellProduct({
     required BuildContext context,
     required String name,
@@ -76,6 +79,8 @@ class AdminServices {
     return byteData;
   }
 
+
+  //Get all product
   Future<List<Product>> getAllProduct({required BuildContext context}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Product> allProduct = [];
@@ -101,4 +106,31 @@ class AdminServices {
     }
     return allProduct;
   }
+
+
+  //Delete product
+  void deleteProduct({
+    required BuildContext context,
+    required Product product,
+    required Function onSuccess
+  }) async {
+    try {
+      UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+      http.Response res = await http.post(Uri.parse("$uri/api/admin/get-product"), body: jsonEncode({"id": product.id}), headers: <String, String>{
+        'Content-Type':"application/json",
+        "x-auth-token": userProvider.user.token
+      });
+
+      httpErrorHandle(response: res, context: context, onSuccess: (){
+        onSuccess();
+      });
+
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
+
+
 }

@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  redis-product-6379:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - data-redis-product:/data 
+
+
+volumes:
+  data-redis-product: {}
+

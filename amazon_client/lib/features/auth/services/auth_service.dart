@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:amazon_client/constants/error_handling.dart';
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/constants/utils.dart';
-import 'package:amazon_client/common/widgets/bottom_screen.dart';
+import 'package:amazon_client/features/home/screens/bottom_navigation_bar.dart';
 import 'package:amazon_client/features/home/screens/home_screen.dart';
 import 'package:amazon_client/models/user.dart';
 import 'package:amazon_client/providers/user_provider.dart';

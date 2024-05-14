@@ -1,3 +1,4 @@
+import 'package:amazon_client/features/home/screens/bottom_navigation_bar.dart';
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/features/Admin/screens/admin_screen.dart';
 import 'package:amazon_client/features/auth/screens/auth_screen.dart';
@@ -8,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => UserProvider(),)
-    ],
-    child:  MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,22 +22,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Amazon",
-      theme: ThemeData(
-        scaffoldBackgroundColor: GlobalVariables.backgroundColor,
-        colorScheme: ColorScheme.light(
-          primary: GlobalVariables.secondaryColor
+        debugShowCheckedModeBanner: false,
+        title: "Amazon",
+        theme: ThemeData(
+          scaffoldBackgroundColor: GlobalVariables.backgroundColor,
+          colorScheme:
+              ColorScheme.light(primary: GlobalVariables.secondaryColor),
+          appBarTheme: const AppBarTheme(
+              elevation: 0, iconTheme: IconThemeData(color: Colors.black)),
         ),
-         appBarTheme:const  AppBarTheme(
-          elevation: 0,
-          iconTheme: IconThemeData(color: Colors.black)
-        ),
-        
-      ),
-      onGenerateRoute: (settings) => generateRoute(settings),
-      home: StartScreen()
-    );
+        onGenerateRoute: (settings) => generateRoute(settings),
+        home: StartScreen());
   }
 }
 
@@ -48,8 +44,7 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-
-   AuthService authService = AuthService();
+  AuthService authService = AuthService();
 
   @override
   void initState() {
@@ -58,9 +53,12 @@ class _StartScreenState extends State<StartScreen> {
     authService.getUserData(context: context);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return  Provider.of<UserProvider>(context).user.token.isNotEmpty?Provider.of<UserProvider>(context).user.type=="user"?BottomAppBar():AdminScreen():AuthScreen();
+    return Provider.of<UserProvider>(context).user.token.isNotEmpty
+        ? Provider.of<UserProvider>(context).user.type == "user"
+            ? BottomBar()
+            : AdminScreen()
+        : AuthScreen();
   }
 }

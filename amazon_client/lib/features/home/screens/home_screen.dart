@@ -1,4 +1,5 @@
 import 'package:amazon_client/constants/global_variables.dart';
+import 'package:amazon_client/features/Search/screens/search_screen.dart';
 import 'package:amazon_client/features/home/widgets/address_location.dart';
 import 'package:amazon_client/features/home/widgets/carousel_item.dart';
 import 'package:amazon_client/features/home/widgets/categories.dart';
@@ -17,6 +18,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +37,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 // Search Bar
                 Expanded(
                   child: Container(
@@ -40,10 +46,16 @@ class _HomePageState extends State<HomePage> {
                     child: Material(
                       elevation: 4,
                       borderRadius: BorderRadius.circular(7),
+                      //Search
                       child: TextFormField(
+                        controller: searchController,
                         decoration: InputDecoration(
                           prefixIcon: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              if(searchController.text.isNotEmpty){
+                                Navigator.pushNamed(context, SearchScreen.routeName, arguments: searchController.text);
+                              }                              
+                            },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Icon(
