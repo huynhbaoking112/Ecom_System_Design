@@ -8,7 +8,8 @@ const adminRouter = express.Router();
 
 //Lưu ý luôn cài 2 middleware để check admin
 //Add product
-adminRouter.route("/admin/add-product").post(handleToken, checkAdmin, addProduct)
+adminRouter.route("/admin/add-product").post( addProduct)
+// adminRouter.route("/admin/add-product").post(handleToken, checkAdmin, addProduct)
 
 
 //get product

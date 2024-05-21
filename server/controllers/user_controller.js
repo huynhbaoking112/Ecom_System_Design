@@ -18,7 +18,8 @@ const getProductWithCategory = async (req, res, next) => {
         //Nếu redis không tồn tại, cung cấp data cho redis
         if(!productJson){
              allProduct = await Product.find()
-            await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))   
+             //Vì logic này không hỗ trợ data cho logic tiếp theo nên không cần dùng await 
+             productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))   
             
         }
         // Nếu redis tồn tại lấy data cho redis

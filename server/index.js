@@ -18,6 +18,10 @@ ConnectDB();
 //Redis
 const initRedis = require("./config/redis_connect")
 initRedis.initRedis()
+//ElasticSearch
+const {connectElastic} = require("./config/elasticsearch")
+connectElastic()
+
 
 
 //Router
