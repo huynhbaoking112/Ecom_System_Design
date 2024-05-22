@@ -4,7 +4,7 @@
 
 const express = require("express");
 const { getProductWithCategory, getProductWithSearchKey } = require("../controllers/user_controller");
-const { handleToken } = require("../middlewares/get_id_token");
+const { handleToken } = require("../../shared/middlewares/get_id_token");
 const userRouter = express.Router();
 
 

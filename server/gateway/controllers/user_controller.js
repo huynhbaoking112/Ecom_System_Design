@@ -1,5 +1,5 @@
-const { getRedis } = require("../config/redis_connect");
-const Product = require("../models/product_model");
+const { getRedis } = require("../../shared/config/redis_connect");
+const Product = require("../../shared/models/product_model");
 
 
 

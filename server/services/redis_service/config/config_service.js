@@ -1,7 +1,7 @@
 const amqp = require("amqplib")
-const {getRedis} = require("./config_redis")
+const {getRedis} = require("../../../shared/config/redis_connect")
 const amqplib_url = "amqp://user:password@localhost:5672";
-const Product = require("../../../models/product_model");
+const Product = require("../../../shared/models/product_model");
 
 
 //Kết nối đến RabbitMQ server
@@ -36,12 +36,13 @@ const receivedHandleRedis = async ()=>{
     await channel.consume(queueName,async (msg)=>{
 
         // console.log(`[Service handle redis] Received message: ${msg.content.toString()}`);
-        let mess = msg.content.toString().split("#")
+        let mess = JSON.parse(msg.content.toString()) 
+
         //lấy loại mess
-        let typeMess = mess[0]
+        let typeMess = mess.typeMess
 
         //lấy data 
-        let data = mess[1]
+        let data = mess.data
 
         //Xử lí
         if(typeMess=="addProduct"){
@@ -50,15 +51,17 @@ const receivedHandleRedis = async ()=>{
             allProducts.push(JSON.parse(data))
             await productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
             channel.ack(msg)
+            console.log("Add product success");
         }
         else if(typeMess == "setProduct"){
             let allProduct = await Product.find()
             await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
             channel.ack(msg)
+            console.log("Set product success");
         }
         else{
             channel.ack(msg)
-            throw new Error("Message lạ")
+            // throw new Error("Message lạ")
         }
 
 

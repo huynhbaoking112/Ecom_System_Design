@@ -1,7 +1,7 @@
-const CustomError = require("../common/handle_error");
-const { hashPassword, comparePassword } = require("../common/handle_password");
-const { generateToken } = require("../common/handle_token");
-const User = require("../models/user_model");
+const CustomError = require("../../shared/common/handle_error");
+const { hashPassword, comparePassword } = require("../../shared/common/handle_password");
+const { generateToken } = require("../../shared/common/handle_token");
+const User = require("../../shared/models/user_model");
 
 const signUpUser = async (req, res, next) => {
   try {

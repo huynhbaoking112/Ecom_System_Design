@@ -12,10 +12,10 @@ app.use(express.json())
 
 //connect Database
 //MongoDB
-const ConnectDB = require("../../config/connect_db")
+const ConnectDB = require("../../shared/config/connect_db")
 ConnectDB();
 // Kết nối redis
-const { initRedis } = require("./config/config_redis")
+const { initRedis } = require("../../shared/config/redis_connect")
 initRedis()
 
 

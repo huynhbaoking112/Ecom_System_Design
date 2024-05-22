@@ -13,7 +13,7 @@ const generateToken =  (data) => {
 
 const verifyToken = (token) =>{
     try {
-        var decoded = jwt.verify(token, 'asdas123adasda');
+      var decoded = jwt.verify(token, 'asdas123adasda');
 
         if(!decoded){
           throw new CustomError("Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại!", 401)

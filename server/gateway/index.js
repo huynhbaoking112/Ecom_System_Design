@@ -9,17 +9,19 @@ require("dotenv").config()
 //middleWare
 app.use(express.json())
 
-
+//connect and create channel RabbitMQ
+const { createConnect } = require("../shared/config/create_exchange_channel")
+createConnect()
 
 //connect Database
 //MongoDB
-const ConnectDB = require("./config/connect_db")
+const ConnectDB = require("../shared/config/connect_db")
 ConnectDB();
 //Redis
-const initRedis = require("./config/redis_connect")
+const initRedis = require("../shared/config/redis_connect")
 initRedis.initRedis()
 //ElasticSearch
-const {connectElastic} = require("./config/elasticsearch")
+const {connectElastic} = require("../shared/config/elasticsearch")
 connectElastic()
 
 
@@ -36,7 +38,7 @@ app.use("/api/user", userRouter)
 
 
 //Xử lí lỗi toàn cục 
-const errorGloblal = require("./middlewares/error_global")
+const errorGloblal = require("../shared/middlewares/error_global")
 app.use(errorGloblal)
 
 
