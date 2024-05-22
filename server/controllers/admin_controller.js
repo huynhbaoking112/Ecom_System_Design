@@ -3,6 +3,7 @@ const { getRedis } = require("../config/redis_connect");
 const Product = require("../models/product_model");
 const {getElastic} = require("../config/elasticsearch");
 const addDoc = require("../common/elastic_sync");
+const sendMessage = require("../config/producer_rabbitmq");
 
 const addProduct = async (req, res, next) => {
     try {
@@ -10,21 +11,16 @@ const addProduct = async (req, res, next) => {
 
         //Tạo trên DB
         let  product =await Product.create({name, description, images, quantity,  price, category});
-        
-        console.log(product);
-        console.log(product._id.toString());
 
         //Cập nhật redis        
         const {productRedis} = getRedis()
         let allProduct = await productRedis.get("allPost")
         if(allProduct){
-            allProducts =  JSON.parse(allProduct);
-            allProducts.push(product)
-            //Vì đây không hỗ trợ cho logic tiếp theo nên không cần đồng bộ nó bằng await
-            // await productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
-            productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
+            //Sử dụng queue đồng bộ dữ liệu
+            await sendMessage({message:"addProduct"+"#"+JSON.stringify(product), route_key:"update.add"})
         }else{
             //Sử dụng rabbitMQ chuyển giao cập nhật data cho redis
+            await sendMessage({message:"setProduct"+"#"+"redis", route_key:"update.set"})
         }
 
 
@@ -80,6 +76,7 @@ const deleteProduct = async (req, res, next) => {
             productRedis.setEx("allPost", 3600, JSON.stringify(newData))    
         }else{
              //Sử dụng rabbitMQ chuyển giao cập nhật data cho redis
+            await sendMessage({message:"setProduct"+"#"+"redis", route_key:"update.set"})
         }
 
 
