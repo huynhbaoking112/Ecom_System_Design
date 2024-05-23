@@ -1,8 +1,6 @@
 const CustomError = require("../../shared/common/handle_error");
 const { getRedis } = require("../../shared/config/redis_connect");
 const Product = require("../../shared/models/product_model");
-const {getElastic} = require("../../shared/config/elasticsearch");
-const addDoc = require("../../shared/common/elastic_sync");
 const sendMessage = require("../../shared/common/sendmessage");
 const { getConnect } = require("../../shared/config/create_exchange_channel");
 
@@ -14,12 +12,9 @@ const addProduct = async (req, res, next) => {
         //Tạo trên DB
         let  product =await Product.create({name, description, images, quantity,  price, category});
 
-        //Cập nhật redis        
+        //Cập nhật redis và elasticSearch     
         let channel = getConnect()
         await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"addProduct", data:JSON.stringify(product)}), route_key:"update.add"})
-
-        //Cập nhật elasticSearch
-        addDoc(product)
 
         // Trả về client
         res.status(200).json(product)
@@ -39,7 +34,7 @@ const getProduct = async (req, res, next) =>{
         if(!data){
             let channel = getConnect()
             data = await Product.find()
-            await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct"}), route_key:"update.set"})
+            await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct"}), route_key:"update.set.redis"})
             return res.json(data)
         }
 

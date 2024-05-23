@@ -1,4 +1,4 @@
-//* Lưu ý khi thao tác dữ liệu cần chỉnh cache redis
+//* Lưu ý khi thao tác dữ liệu cần chỉnh elasticSearch
 
 
 const express = require("express")
@@ -10,12 +10,19 @@ require("dotenv").config()
 app.use(express.json())
 
 
-
-//ElasticSearch
-const {connectElastic} = require("../../config/elasticsearch")
+//connect Database
+//MongoDB
+const ConnectDB = require("../../shared/config/connect_db")
+ConnectDB();
+// Kết nối redis
+const { connectElastic } = require("../../shared/config/elasticsearch")
 connectElastic()
 
+
 //Kết nối RabbitMQ và khởi tạo consumer
+const receivedHandleElatic = require("./config/config_service")
+receivedHandleElatic()
+
 
 
 app.listen(5000, ()=>{

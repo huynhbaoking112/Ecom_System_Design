@@ -1,18 +1,5 @@
 const elasticsearch = require("elasticsearch");
 
-// class clientElasticSearch {
-//   client;
-
-//   static getElastic() {
-//     if (!this.client) {
-//       this.client = new elasticsearch.Client({
-//         host: ["https://elastic:xVZ2_eO**RHdL5Z499xD@localhost:9200"],
-//       });
-//     }
-//     return this.client;
-//   }
-// }
-// module.exports = clientElasticSearch.getElastic();
 
 
 const allElastic = {}

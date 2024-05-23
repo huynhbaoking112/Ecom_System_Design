@@ -13,13 +13,13 @@ adminRouter.route("/admin/add-product").post( addProduct)
 
 
 //get product
-adminRouter.route("/admin/get-product")
-.get(getProduct)
 // adminRouter.route("/admin/get-product")
-// .get(handleToken, checkAdmin, getProduct)
+// .get(getProduct)
+adminRouter.route("/admin/get-product")
+.get(handleToken, checkAdmin, getProduct)
 //DeleteProduct
-.post(deleteProduct)
-// .post(handleToken, checkAdmin, deleteProduct)
+// .post(deleteProduct)
+.post(handleToken, checkAdmin, deleteProduct)
 
 
 module.exports = adminRouter;

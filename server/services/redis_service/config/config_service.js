@@ -15,7 +15,7 @@ const receivedHandleRedis = async ()=>{
 
     //taoj queue name
     const queueName = 'redis_caches_queue'
-    const bindingKey = "update.*"
+    const bindingKey = "update.#"
 
     // Khai báo Exchange
     const exchangeName = 'topic_update_datas';
@@ -53,12 +53,12 @@ const receivedHandleRedis = async ()=>{
                 allProducts.push(JSON.parse(data))
                 await productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
                 channel.ack(msg)
-                console.log("Add product success");
+                console.log("Add product success from Redis service");
             }else{
                 allProduct = await Product.find()
                 await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
                 channel.ack(msg)
-                console.log("Set product success");
+                console.log("Set product success from Redis service");
             }
         }
 
@@ -67,7 +67,7 @@ const receivedHandleRedis = async ()=>{
             let allProduct = await Product.find()
             await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
             channel.ack(msg)
-            console.log("Set product success");
+            console.log("Set product success from Redis Service");   
         }
 
         //Xóa product
@@ -78,18 +78,18 @@ const receivedHandleRedis = async ()=>{
                 newAllProducts = allProducts.filter((e)=>e._id!=JSON.parse(data))
                 await productRedis.setEx("allPost", 3600, JSON.stringify(newAllProducts))
                 channel.ack(msg)
-                console.log("Set product success");
+                console.log("Delete product success from Redis Service");   
             }else{
                 let allProduct = await Product.find()
                 await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
                 channel.ack(msg)
-                console.log("Set product success");               
+                console.log("Set product success from Redis Service");               
             }
         }
         //Xử lí message lạ
         else{
             channel.ack(msg)
-            throw new Error("Message lạ")
+            throw new Error("Redis Service nhận được Message lạ: "+msg.content)
         }
 
 
