@@ -15,21 +15,10 @@ const addProduct = async (req, res, next) => {
         let  product =await Product.create({name, description, images, quantity,  price, category});
 
         //Cập nhật redis        
-        const {productRedis} = getRedis()
-        let allProduct = await productRedis.get("allPost")
-
         let channel = getConnect()
-        if(allProduct){
-            //Sử dụng queue đồng bộ dữ liệu
-            await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"addProduct", data:JSON.stringify(product)}), route_key:"update.add"})
-        }else{
-            //Sử dụng rabbitMQ chuyển giao cập nhật data cho redis
-            await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct", data:JSON.stringify(product)}), route_key:"update.set"})
-        }
+        await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"addProduct", data:JSON.stringify(product)}), route_key:"update.add"})
 
-
-
-        // Đồng bộ dữ liệu cho elasticSearch - Dùng rabbitMQ
+        //Cập nhật elasticSearch
         addDoc(product)
 
         // Trả về client
@@ -47,11 +36,10 @@ const getProduct = async (req, res, next) =>{
         let {productRedis } =  getRedis();
     
         let data = await productRedis.get("allPost");
-
         if(!data){
+            let channel = getConnect()
             data = await Product.find()
-            //Vì data không hỗ trợ logic tiếp theo nên không cần đồng bộ nó bằng await
-            productRedis.setEx("allPost", 3600, JSON.stringify(data))
+            await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct"}), route_key:"update.set"})
             return res.json(data)
         }
 
@@ -71,18 +59,10 @@ const deleteProduct = async (req, res, next) => {
         await Product.findByIdAndDelete(id)
 
         //Cập nhật redis
-        const {productRedis} = getRedis()
-        let allProduct = await productRedis.get("allPost")
-
         let channel = getConnect()
-        if(allProduct){ 
-            allProducts =  JSON.parse(allProduct);
-            let newData = allProducts.filter((pro) => pro._id != id )
-            productRedis.setEx("allPost", 3600, JSON.stringify(newData))    
-        }else{
-             //Sử dụng rabbitMQ chuyển giao cập nhật data cho redis
-             await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct", data:JSON.stringify(product)}), route_key:"update.set"})
-            }
+        await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"deleteProduct", data:JSON.stringify(id)}), route_key:"update.delete"})
+        
+        //Cập nhật elasticSearch
 
 
         //Trả về client

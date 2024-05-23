@@ -1,3 +1,5 @@
+const sendMessage = require("../../shared/common/sendmessage");
+const { getConnect } = require("../../shared/config/create_exchange_channel");
 const { getRedis } = require("../../shared/config/redis_connect");
 const Product = require("../../shared/models/product_model");
 
@@ -17,20 +19,18 @@ const getProductWithCategory = async (req, res, next) => {
 
         //Nếu redis không tồn tại, cung cấp data cho redis
         if(!productJson){
+            let channel = getConnect()
              allProduct = await Product.find()
-             //Vì logic này không hỗ trợ data cho logic tiếp theo nên không cần dùng await 
-             productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))   
+             await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"setProduct"}), route_key:"update.set"})  
             
         }
-        // Nếu redis tồn tại lấy data cho redis
+        // Nếu redis tồn tại lấy data từ redis
         else{
             allProduct = JSON.parse(productJson)
         }
-        
         // Lọc category trả về cho client
         let categoryProduct = allProduct.filter((e) => e.category == category)
         return res.status(200).json(categoryProduct)
-        
         
 
     } catch (error) {
@@ -48,7 +48,7 @@ const getProductWithSearchKey = async (req, res, next) =>  {
         let allProductWithSearch = await Product.find({
             name:{$regex: name, $options: "i"  }
         })
-        // console.log(allProductWithSearch);
+
         
         res.status(200).json(allProductWithSearch)
 

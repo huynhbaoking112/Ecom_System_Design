@@ -45,23 +45,51 @@ const receivedHandleRedis = async ()=>{
         let data = mess.data
 
         //Xử lí
+        //Thêm product
         if(typeMess=="addProduct"){
             let allProduct = await productRedis.get("allPost")
-            allProducts =  JSON.parse(allProduct);
-            allProducts.push(JSON.parse(data))
-            await productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
-            channel.ack(msg)
-            console.log("Add product success");
+            if(allProduct){
+                allProducts =  JSON.parse(allProduct);
+                allProducts.push(JSON.parse(data))
+                await productRedis.setEx("allPost", 3600, JSON.stringify(allProducts))
+                channel.ack(msg)
+                console.log("Add product success");
+            }else{
+                allProduct = await Product.find()
+                await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
+                channel.ack(msg)
+                console.log("Set product success");
+            }
         }
+
+        //Set Product trên redis
         else if(typeMess == "setProduct"){
             let allProduct = await Product.find()
             await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
             channel.ack(msg)
             console.log("Set product success");
         }
+
+        //Xóa product
+        else if(typeMess == "deleteProduct"){
+            let allProduct = await productRedis.get("allPost")
+            if(allProduct){
+                allProducts =  JSON.parse(allProduct);
+                newAllProducts = allProducts.filter((e)=>e._id!=JSON.parse(data))
+                await productRedis.setEx("allPost", 3600, JSON.stringify(newAllProducts))
+                channel.ack(msg)
+                console.log("Set product success");
+            }else{
+                let allProduct = await Product.find()
+                await productRedis.setEx("allPost", 3600, JSON.stringify(allProduct))
+                channel.ack(msg)
+                console.log("Set product success");               
+            }
+        }
+        //Xử lí message lạ
         else{
             channel.ack(msg)
-            // throw new Error("Message lạ")
+            throw new Error("Message lạ")
         }
 
 
