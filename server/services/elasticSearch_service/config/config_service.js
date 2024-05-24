@@ -62,7 +62,7 @@ const receivedHandleElatic = async ()=>{
         //Xử lí message lạ
         else{
             channel.ack(msg)
-            throw new Error("Elastic Service nhận được Message lạ: "+msg.content)
+            // throw new Error("Elastic Service nhận được Message lạ: "+msg.content)
         }
 
     },{

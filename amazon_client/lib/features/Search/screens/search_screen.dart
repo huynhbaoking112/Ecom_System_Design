@@ -134,48 +134,53 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index){
                   return Container(
                     padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        
-                        //Image
-                        Container(
-                          height: double.infinity,
-                          child: Image.network(allProduct![index].images[0], width: 150, fit: BoxFit.fitHeight,),
-                        ),
-                    
-                        const SizedBox(width: 15,),
-
-                        //Infor
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            //Name
-                            Text(allProduct![index].name,style: TextStyle(fontSize: 20) , maxLines: 2, overflow: TextOverflow.ellipsis),
-                            
-                            const SizedBox(height: 5,),
-
-                            //star
-                            StarCustom(numStar: 4),
-
-                            const SizedBox(height: 5,),
-                            //price
-                            Text("\$${allProduct![index].price}", style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20
-                            ),),
-                            
-                            const SizedBox(height: 5,),
-
-                            //Eligble for FREE Shipping
-                            Text("Eligible for FREE Shipping"),
-                            
-                            //In stock
-                            Text("In stock", style: TextStyle(color: Colors.blue.shade700),)
-                          ],
-                        )
-                    
-                      ],
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, "/productscreen", arguments: allProduct![index]);
+                      },
+                      child: Row(
+                        children: [
+                          
+                          //Image
+                          Container(
+                            height: double.infinity,
+                            child: Image.network(allProduct![index].images[0], width: 150, fit: BoxFit.fitHeight,),
+                          ),
+                      
+                          const SizedBox(width: 15,),
+                      
+                          //Infor
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                      
+                              //Name
+                              Text(allProduct![index].name,style: TextStyle(fontSize: 20) , maxLines: 2, overflow: TextOverflow.ellipsis),
+                              
+                              const SizedBox(height: 5,),
+                      
+                              //star
+                              StarCustom(numStar: 4),
+                      
+                              const SizedBox(height: 5,),
+                              //price
+                              Text("\$${allProduct![index].price}", style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20
+                              ),),
+                              
+                              const SizedBox(height: 5,),
+                      
+                              //Eligble for FREE Shipping
+                              Text("Eligible for FREE Shipping"),
+                              
+                              //In stock
+                              Text("In stock", style: TextStyle(color: Colors.blue.shade700),)
+                            ],
+                          )
+                      
+                        ],
+                      ),
                     ),
                   );
                 },),

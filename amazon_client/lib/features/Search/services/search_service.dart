@@ -28,7 +28,9 @@ class SearchService{
       });
       
       httpErrorHandle(response: res, context: context, onSuccess: (){
-        jsonDecode(res.body).forEach((e){allProductWithSearch.add(Product.fromJson(jsonEncode(e)));});
+        jsonDecode(res.body).forEach((e){
+          allProductWithSearch.add(Product.fromJsonElastic(jsonEncode(e)));
+          });
         showSnackBar(context, "Search successfully");
       });
 

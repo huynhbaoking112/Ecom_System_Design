@@ -94,62 +94,67 @@ class _CategoryDealState extends State<CategoryDeal> {
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                       width: 2, color: Colors.black12)),
-                              child: Column(
-                                children: [
-                                  //Image product
-                                  Container(
-                                    height: 190,
-                                    padding: EdgeInsets.all(8),
-                                    child: Image.network(
-                                      allProductWithCategory![index].images[0],
-                                      fit: BoxFit.fitHeight,
+                              child: GestureDetector(
+                                onTap: (){
+                                  Navigator.pushNamed(context, "/productscreen", arguments: allProductWithCategory![index]);
+                                },
+                                child: Column(
+                                  children: [
+                                    //Image product
+                                    Container(
+                                      height: 190,
+                                      padding: EdgeInsets.all(8),
+                                      child: Image.network(
+                                        allProductWithCategory![index].images[0],
+                                        fit: BoxFit.fitHeight,
+                                      ),
                                     ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-
-                                  //Name product and price
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0),
-                                    child: Column(
-                                      children: [
-                                        //Name product
-                                        Text(
-                                          allProductWithCategory![index].name,
-                                          style: TextStyle(fontSize: 16),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            //Price
-                                            Text(
-                                              allProductWithCategory![index]
-                                                  .price
-                                                  .toString(),
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.orangeAccent,
-                                                fontWeight: FontWeight.w800,
+                                
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                
+                                    //Name product and price
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      child: Column(
+                                        children: [
+                                          //Name product
+                                          Text(
+                                            allProductWithCategory![index].name,
+                                            style: TextStyle(fontSize: 16),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              //Price
+                                              Text(
+                                                allProductWithCategory![index]
+                                                    .price
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.orangeAccent,
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-
-                                            //Rating
-                                            StarCustom(numStar: 4,)
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                
+                                              //Rating
+                                              StarCustom(numStar: 4,)
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );

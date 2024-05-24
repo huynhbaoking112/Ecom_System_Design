@@ -5,8 +5,9 @@ class MyButtonCustom extends StatelessWidget {
 
   final String text;
   final Function onPressedButton;
-
-  const MyButtonCustom({super.key, required this.text, required this.onPressedButton});
+  final Color color;
+  final Color textColor;
+  const MyButtonCustom({super.key, required this.text,this.textColor = Colors.white ,required this.onPressedButton, this.color=GlobalVariables.secondaryColor});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +15,8 @@ class MyButtonCustom extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         minimumSize: Size(double.infinity, 50),
-        foregroundColor: Colors.white,
-        backgroundColor: GlobalVariables.secondaryColor
+        foregroundColor: textColor,
+        backgroundColor: color
       ),
       onPressed: (){
         onPressedButton();

@@ -3,7 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class StarCustom extends StatelessWidget {
   double numStar;
-  StarCustom({super.key, required this.numStar});
+  double sizeStar;
+  StarCustom({super.key, required this.numStar, this.sizeStar=20});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class StarCustom extends StatelessWidget {
          color: Colors.amber,
     ),
     itemCount: 5,
-    itemSize: 20.0,
+    itemSize: sizeStar,
     direction: Axis.horizontal,);
   }
 }
