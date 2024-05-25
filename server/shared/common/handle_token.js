@@ -16,7 +16,7 @@ const verifyToken = (token) =>{
       var decoded = jwt.verify(token, 'asdas123adasda');
 
         if(!decoded){
-          throw new CustomError("Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại!", 401)
+          throw new CustomError("Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại!", 400)
         }
 
         return decoded;

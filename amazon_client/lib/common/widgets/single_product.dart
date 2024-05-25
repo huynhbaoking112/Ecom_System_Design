@@ -12,7 +12,7 @@ class SingleProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                margin: EdgeInsets.only(left: 10),
+                // margin: EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black12, width: 1.5),
                   borderRadius: BorderRadius.circular(5)

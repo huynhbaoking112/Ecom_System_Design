@@ -12,6 +12,10 @@ class UserProvider extends ChangeNotifier {
     notifyListeners(); 
   }
 
+  void resetUser(){
+    _user =  User(id: "", name: "", password: "", address: "", type: "", token: "", email: "");
+    notifyListeners(); 
+  }
 
 
   void setUserModel(User user){

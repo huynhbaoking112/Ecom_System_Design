@@ -7,7 +7,7 @@ const handleToken = async (req,res,next)=>{
    try {
        const token = req.headers['x-auth-token'];
        if(!token){
-        throw new CustomError("Vui lòng đăng nhập", 403)
+        throw new CustomError("Vui lòng đăng nhập", 400)
        }
 
        //Giai ma token
@@ -18,7 +18,7 @@ const handleToken = async (req,res,next)=>{
 
     //Neu nguoi dung khong ton tai
     if(!user){
-        throw new CustomError("Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại", 404)
+        throw new CustomError("Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại", 400)
     }
 
     //Hoàn tất xác minh 

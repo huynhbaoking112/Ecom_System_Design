@@ -57,7 +57,7 @@ class AuthService {
         "x-auth-token" : token 
       }); 
 
-      httpErrorHandle(response: res, context: context, onSuccess: () async {
+       httpErrorHandle(response: res, context: context, onSuccess: () async {
         Provider.of<UserProvider>(context, listen: false).setUser(res.body);
       });
 

@@ -16,8 +16,8 @@ userRouter.route("/product").get(handleToken ,getProductWithCategory)
 
 
 //Get product with search key ( Sử dụng mongoose không dùng redis về nó có hỗ trợ biểu thức chính quy - Sau này nâng cấp elSearch thì áp dụng eLsearch )
-userRouter.route("/search/:name").get(getProductWithSearchKey)
-// userRouter.route("/search/:name").get(handleToken, getProductWithSearchKey)
+// userRouter.route("/search/:name").get(getProductWithSearchKey)
+userRouter.route("/search/:name").get(handleToken, getProductWithSearchKey)
 
 
 

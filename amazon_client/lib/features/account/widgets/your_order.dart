@@ -1,5 +1,5 @@
 import 'package:amazon_client/constants/global_variables.dart';
-import 'package:amazon_client/features/account/widgets/single_product.dart';
+import 'package:amazon_client/common/widgets/single_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

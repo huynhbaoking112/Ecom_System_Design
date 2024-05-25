@@ -81,7 +81,7 @@ const getProductWithSearchKey = async (req, res, next) => {
         }
       }
     });
-    // console.log(allProductWithSearch.hits.hits);
+
     res.status(200).json(allProductWithSearch.hits.hits)
   } catch (error) {
     next(error);

@@ -1,7 +1,7 @@
 import 'package:amazon_client/common/widgets/loader.dart';
 import 'package:amazon_client/features/Admin/screens/add_product_screen.dart';
 import 'package:amazon_client/features/Admin/services/admin_service.dart';
-import 'package:amazon_client/features/account/widgets/single_product.dart';
+import 'package:amazon_client/common/widgets/single_product.dart';
 import 'package:amazon_client/models/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,14 +34,16 @@ class _PostPageState extends State<PostPage> {
     setState(() {});
   }
 
-
   //delete product
-  void deleteProduct(Product product, int index){
-    adminServices.deleteProduct(context: context, product: product, onSuccess: (){
-        setState(() {
-          allProduct!.removeAt(index);
+  void deleteProduct(Product product, int index) {
+    adminServices.deleteProduct(
+        context: context,
+        product: product,
+        onSuccess: () {
+          setState(() {
+            allProduct!.removeAt(index);
+          });
         });
-    });
   }
 
   @override
@@ -76,10 +78,12 @@ class _PostPageState extends State<PostPage> {
                 itemCount: allProduct!.length,
                 // padding: EdgeInsets.all(5),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 20,
+                    mainAxisExtent: 250, crossAxisCount: 2),
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.only(bottom: 10, left: 10),
+                    // margin: EdgeInsets.only(bottom: 10, left: 10),
                     decoration: BoxDecoration(
                         border: Border.all(width: 1, color: Colors.grey)),
                     child: SingleChildScrollView(
@@ -88,8 +92,10 @@ class _PostPageState extends State<PostPage> {
                         children: [
                           //Image product
                           Container(
-                              child: SingleProduct(
-                                  url: allProduct![index].images[0])),
+                              child: Center(
+                                child: SingleProduct(
+                                    url: allProduct![index].images[0]),
+                              )),
 
                           const SizedBox(
                             height: 3,
