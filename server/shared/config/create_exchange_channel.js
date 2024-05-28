@@ -1,5 +1,5 @@
 
-const amqplib_url = "amqp://user:password@localhost:5672";
+const amqplib_url = process.env.RABBITMQURL;
 const amqp = require('amqplib');
 
 //Luư trữ kết nối
@@ -7,7 +7,7 @@ let allChannel = {}
 
 
 //Kết nối đến RabbitMQ server
-const createConnect = async()=>{
+const createConnect = async(...args)=>{
     try {
     
         const client = await amqp.connect(amqplib_url)
@@ -15,14 +15,13 @@ const createConnect = async()=>{
         //tạo channel
         const channel = await client.createChannel()
 
-        // Khai báo Exchange
-        const exchangeName = 'topic_update_datas';
-        const exchangeType = 'topic';
 
         //bind          
-         await channel.assertExchange(exchangeName, exchangeType, {
-        durable: true
-        })
+        for(i = 0; i< args.length; i++){
+             await channel.assertExchange(args[i].exchangeName, args[i].exchangeType, {
+            durable: true
+            })
+        }
 
         console.log(`Create connect RabbitMQ server and create channel completed`);
 

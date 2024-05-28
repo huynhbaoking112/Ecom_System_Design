@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const sendMessage = require("../../shared/common/sendmessage");
 const { getConnect } = require("../../shared/config/create_exchange_channel");
 const { getElastic } = require("../../shared/config/elasticsearch");
@@ -41,51 +42,106 @@ const getProductWithSearchKey = async (req, res, next) => {
   const { name } = req.params;
 
   try {
-   
     const { productElastic } = getElastic();
     const allProductWithSearch = await productElastic.search({
       index: "allpost",
       body: {
-        "size": 10, 
-        "query": {
+        size: 10,
+        query: {
           bool: {
             should: [
               {
                 wildcard: {
-                    name: `*${name}*`
-                }
-            },
-            {
+                  name: `*${name}*`,
+                },
+              },
+              {
                 wildcard: {
-                    category: `*${name}*`
-                }
-            }
-            // {
-            //   "match": {
-            //     "name": {
-            //       "query": "k",
-            //       "fuzziness": "AUTO"
-            //     }
-            //   }
-            // },
-            // {
-            //   "match": {
-            //     "category": {
-            //       "query": "mobiles",
-            //       "fuzziness": "AUTO"
-            //     }
-            //   }
-            // }
-            ]
-        }
-        }
-      }
+                  category: `*${name}*`,
+                },
+              },
+              // {
+              //   "match": {
+              //     "name": {
+              //       "query": "k",
+              //       "fuzziness": "AUTO"
+              //     }
+              //   }
+              // },
+              // {
+              //   "match": {
+              //     "category": {
+              //       "query": "mobiles",
+              //       "fuzziness": "AUTO"
+              //     }
+              //   }
+              // }
+            ],
+          },
+        },
+      },
     });
 
-    res.status(200).json(allProductWithSearch.hits.hits)
+    res.status(200).json(allProductWithSearch.hits.hits);
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getProductWithCategory, getProductWithSearchKey };
+const getRatingProductWithId = async (req, res, next) => {
+  const { productid } = req.params;
+  try {
+
+    //Sử dụng elasticSearch để tăng tốc độ truy vấn
+    const { productElastic } = getElastic();
+    const allProductWithSearch = await productElastic.search({
+      index:"ratings",
+      body:{
+        query:{
+          bool:{
+            should:[
+              {
+                match: {
+                  "product_id": productid
+                }
+              }
+            ]
+          }
+        },
+        aggs: {
+          avg_ratings: {
+            avg: {
+              field: "ratings"
+            }
+          }
+        }
+      }
+    });
+
+    res.status(200).json(allProductWithSearch.aggregations.avg_ratings)
+
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+const postRatingWithId =async (req, res, next)=>{
+  try {
+
+    // Gọi đến service product để update
+    const result = await axios.post("http://localhost:7000/api/updateRating",req.body)
+    res.status(result.status).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+
+module.exports = {
+  getProductWithCategory,
+  getProductWithSearchKey,
+  getRatingProductWithId,
+  postRatingWithId
+};

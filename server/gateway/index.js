@@ -11,7 +11,7 @@ app.use(express.json())
 
 //connect and create channel RabbitMQ
 const { createConnect } = require("../shared/config/create_exchange_channel")
-createConnect()
+createConnect({exchangeName:'topic_update_datas',exchangeType:'topic'})
 
 //connect Database
 //MongoDB
@@ -38,8 +38,8 @@ app.use("/api/user", userRouter)
 
 
 //Xử lí lỗi toàn cục 
-const errorGloblal = require("../shared/middlewares/error_global")
-app.use(errorGloblal)
+const errorGlobal = require("../shared/middlewares/error_global")
+app.use(errorGlobal)
 
 
 app.listen(process.env.PORT, ()=>{

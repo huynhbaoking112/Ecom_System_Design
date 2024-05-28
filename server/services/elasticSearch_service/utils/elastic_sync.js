@@ -22,6 +22,27 @@ const addDoc = async (product) => {
   }
 };
 
+const updateRating = async (product) => {
+try {
+  const { productElastic } = getElastic();
+  await productElastic.index({
+    index: "ratings",
+    id: product._id.toString(),
+    body: {
+      keys: product.keys,
+      product_id: product.product_id,
+      ratings: product.ratings,
+      user_id: product.user_id,
+      createdAt: product.createdAt.toString(),
+      updatedAt: product.updatedAt.toString(),
+    },
+  });
+
+} catch (error) {
+  console.log(error.message);
+  throw new Error("Đồng bộ hóa elasticSearch không thành công");
+ }
+}
 const deleteDoc = async (id) => {
   try {
     const { productElastic } = getElastic();
@@ -36,4 +57,5 @@ const deleteDoc = async (id) => {
   }
 };
 
-module.exports = { addDoc, deleteDoc };
+
+module.exports = { addDoc, deleteDoc, updateRating };

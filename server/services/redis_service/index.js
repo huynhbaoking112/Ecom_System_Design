@@ -21,7 +21,7 @@ initRedis()
 
 //Kết nối RabbitMQ và khởi tạo consumer
 const receivedHandleRedis = require("./config/config_service")
-receivedHandleRedis()
+receivedHandleRedis({exchangeName:'topic_update_datas', exchangeType:'topic', bindingKey: "update.#"})
 
 
 

@@ -5,7 +5,7 @@ const Product = require("../../../shared/models/product_model");
 
 
 //Kết nối đến RabbitMQ server
-const receivedHandleRedis = async ()=>{
+const receivedHandleRedis = async (...args)=>{
     try {
     const {productRedis} = getRedis()   
     const client = await amqp.connect(amqplib_url)
@@ -15,23 +15,21 @@ const receivedHandleRedis = async ()=>{
 
     //taoj queue name
     const queueName = 'redis_caches_queue'
-    const bindingKey = "update.#"
-
-    // Khai báo Exchange
-    const exchangeName = 'topic_update_datas';
-    const exchangeType = 'topic';
-
-    //bind
-    await channel.assertExchange(exchangeName, exchangeType, {
-        durable: true
-    })
     await channel.assertQueue(queueName,{
         //Backup queue vào disk
         durable:true
     })
-    await channel.bindQueue(queueName, exchangeName, bindingKey)
 
-    console.log(`[Service handle redis] Waiting for messages with binding key ${bindingKey}`);
+    for(i=0 ; i< args.length; i++){
+        //bind
+        await channel.assertExchange(args[i].exchangeName, args[i].exchangeType, {
+            durable: true
+        })
+        await channel.bindQueue(queueName, args[i].exchangeName, args[i].bindingKey)
+    }
+
+
+    console.log(`[Service handle redis] Waiting for messages `);
 
     await channel.consume(queueName,async (msg)=>{
 
