@@ -16,9 +16,10 @@ const updateRatings = async (req, res, next) =>{
 
     //dung queue đồng bộ hóa ElasticSearch
     let channel = getConnect()
-    await sendMessage({channel, exchangeName:"topic_update_ratings", message:JSON.stringify, message:JSON.stringify({typeMess:"updateRating", data:JSON.stringify(newRating)}), route_key:"update.rating"})
-    
-    res.status(200).json(newRating)
+    await sendMessage({channel, exchangeName:"topic_update_ratings", message:JSON.stringify, message:JSON.stringify({typeMess:"updateRating", data:JSON.stringify(newRating)}), route_key:"elastic.rating"})
+
+    // res.status(200).json(newRating)
+    res.status(200).json()
  } catch (error) {
     next(error)
  }   

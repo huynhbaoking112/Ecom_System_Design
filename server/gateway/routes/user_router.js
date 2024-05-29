@@ -21,11 +21,11 @@ userRouter.route("/search/:name").get(handleToken, getProductWithSearchKey)
 
 userRouter.route("/ratings/product/:productid")
 //get product ratings
-// .get(handleToken, getRatingProductWithId )
-.get( getRatingProductWithId )
+.get(handleToken, getRatingProductWithId )
+// .get( getRatingProductWithId )
 //post ratings 
-// .post(handleToken, postRatingWithId )
-.post(postRatingWithId )
+.post(handleToken, postRatingWithId )
+// .post(postRatingWithId )
 
 
 module.exports = userRouter
