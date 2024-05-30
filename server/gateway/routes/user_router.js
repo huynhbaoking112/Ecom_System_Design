@@ -3,7 +3,7 @@
 
 
 const express = require("express");
-const { getProductWithCategory, getProductWithSearchKey, getRatingProductWithId, postRatingWithId } = require("../controllers/user_controller");
+const { deleteProduct, getProductWithCategory, getProductWithSearchKey, getRatingProductWithId, postRatingWithId, addProductToCart, getProductInCart } = require("../controllers/user_controller");
 const { handleToken } = require("../../shared/middlewares/get_id_token");
 const userRouter = express.Router();
 
@@ -26,6 +26,23 @@ userRouter.route("/ratings/product/:productid")
 //post ratings 
 .post(handleToken, postRatingWithId )
 // .post(postRatingWithId )
+
+
+//User Cart
+userRouter.route("/usercart/product")
+//Add product to cart
+.post(handleToken, addProductToCart)
+// .post(addProductToCart)
+
+
+//get allProduct in cart
+.get(handleToken, getProductInCart)
+// .get(getProductInCart)
+
+
+//delete product in cart
+userRouter.route("/deletedusercart/product")
+.post(handleToken, deleteProduct)
 
 
 module.exports = userRouter

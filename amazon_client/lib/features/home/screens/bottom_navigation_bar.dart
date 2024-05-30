@@ -1,8 +1,11 @@
 import 'package:amazon_client/features/account/screens/account_screen.dart';
 import 'package:amazon_client/features/home/screens/home_screen.dart';
+import 'package:amazon_client/features/home/service/home_services.dart';
+import 'package:amazon_client/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class BottomBar extends StatefulWidget {
   static const String routeName = "/bottom-screen";
@@ -13,6 +16,14 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HomeService.getProductInCart(context: context);
+  }
+
   //index page
   int indexPage = 0;
 
@@ -62,7 +73,7 @@ class _BottomBarState extends State<BottomBar> {
                     });
                   },
                   child: badges.Badge(
-                    badgeContent: Text('3', style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 15),),
+                    badgeContent: Text(Provider.of<CartProvider>(context, listen: true).catProduct.allProduct.length.toString(), style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 15),),
                     badgeStyle: badges.BadgeStyle(badgeColor: Colors.transparent,),
                     position: badges.BadgePosition.topEnd(),
                     child: Icon(Icons.shopping_cart_outlined, ),

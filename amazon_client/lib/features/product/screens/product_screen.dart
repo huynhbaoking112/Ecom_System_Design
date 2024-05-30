@@ -134,7 +134,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         text: "Add to Cart",
                         textColor: Colors.black,
                         color: Colors.yellow.shade600,
-                        onPressedButton: () {}),
+                        onPressedButton: () {
+                          ProductService.addProductInCart(context: context, productId: widget.product.id!, quantity: 1);
+                        }),
                 
                     //Diliver
                     Container(

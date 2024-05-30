@@ -3,6 +3,7 @@ import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/features/Admin/screens/admin_screen.dart';
 import 'package:amazon_client/features/auth/screens/auth_screen.dart';
 import 'package:amazon_client/features/auth/services/auth_service.dart';
+import 'package:amazon_client/providers/cart_provider.dart';
 import 'package:amazon_client/providers/user_provider.dart';
 import 'package:amazon_client/router.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
-    )
+    ),
+    ChangeNotifierProvider(create: (context) =>  CartProvider(),)
   ], child: MyApp()));
 }
 

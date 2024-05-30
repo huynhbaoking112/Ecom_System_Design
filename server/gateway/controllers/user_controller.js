@@ -4,6 +4,7 @@ const { getConnect } = require("../../shared/config/create_exchange_channel");
 const { getElastic } = require("../../shared/config/elasticsearch");
 const { getRedis } = require("../../shared/config/redis_connect");
 const Product = require("../../shared/models/product_model");
+const UserCart = require("../../shared/models/user_cart_model");
 
 const getProductWithCategory = async (req, res, next) => {
   const { category } = req.query;
@@ -117,10 +118,7 @@ const getRatingProductWithId = async (req, res, next) => {
         }
       }
     });
-
     res.status(200).json(allProductWithSearch.aggregations.avg_ratings)
-
-
   } catch (error) {
     next(error);
   }
@@ -138,10 +136,53 @@ const postRatingWithId =async (req, res, next)=>{
 }
 
 
+const addProductToCart =  async(req, res, next) => {
+  try {
+    
+    const result = await axios.post("http://localhost:7200/api/addcartofuser",{
+      productId: req.body.productId,
+      quantity: req.body.quantity,
+      userId:req.user._id.toString()
+    })
+    res.status(result.status).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getProductInCart = async (req, res, next)=>{
+  try {
+    const result = await axios.post("http://localhost:7200/api/cartofuser",{
+      userId:req.user._id.toString()
+    })
+    res.status(result.status).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+const deleteProduct =  async(req, res, next) => {
+  try {
+    let {productId}  = req.body
+    const result = await axios.post("http://localhost:7200/api/deletecartofuser",{
+      userId:req.user._id.toString(),
+      productId
+    })
+    res.status(result.status).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 
 module.exports = {
   getProductWithCategory,
   getProductWithSearchKey,
   getRatingProductWithId,
-  postRatingWithId
+  postRatingWithId,
+  addProductToCart,
+  getProductInCart,
+  deleteProduct
 };
