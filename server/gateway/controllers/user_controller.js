@@ -175,6 +175,20 @@ const deleteProduct =  async(req, res, next) => {
   }
 }
 
+const inanddeProduct = async (req, res, next)=>{
+  try {
+    let {productId, symbol}  = req.body
+    const result = await axios.post("http://localhost:7200/api/increandecre",{
+      userId:req.user._id.toString(),
+      productId,
+      symbol
+    })
+    res.status(result.status).json(result.data)
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 
 module.exports = {
@@ -184,5 +198,6 @@ module.exports = {
   postRatingWithId,
   addProductToCart,
   getProductInCart,
-  deleteProduct
+  deleteProduct,
+  inanddeProduct
 };

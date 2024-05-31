@@ -3,7 +3,7 @@
 
 
 const express = require("express");
-const { deleteProduct, getProductWithCategory, getProductWithSearchKey, getRatingProductWithId, postRatingWithId, addProductToCart, getProductInCart } = require("../controllers/user_controller");
+const {inanddeProduct ,deleteProduct, getProductWithCategory, getProductWithSearchKey, getRatingProductWithId, postRatingWithId, addProductToCart, getProductInCart } = require("../controllers/user_controller");
 const { handleToken } = require("../../shared/middlewares/get_id_token");
 const userRouter = express.Router();
 
@@ -43,6 +43,12 @@ userRouter.route("/usercart/product")
 //delete product in cart
 userRouter.route("/deletedusercart/product")
 .post(handleToken, deleteProduct)
+
+//incre and decre product in cart
+userRouter.route("/increandecre/product")
+.post(handleToken, inanddeProduct)
+
+
 
 
 module.exports = userRouter

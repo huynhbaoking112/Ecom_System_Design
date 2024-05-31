@@ -31,7 +31,7 @@ class HomeService {
           onSuccess: () {
             jsonDecode(res.body).forEach(
                 (e) => allProduct.add(Product.fromJson(jsonEncode(e))));
-            showSnackBar(context, "Alll product with category: $category");
+            showSnackBar(context, "All product with category: $category");
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -57,7 +57,6 @@ class HomeService {
 
     httpErrorHandle(response: res, context: context, onSuccess: (){
         cartProvider.setCart(res.body);
-      print(cartProvider.catProduct.allProduct.length);
     });
 
 

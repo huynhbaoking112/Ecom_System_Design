@@ -1,4 +1,5 @@
 import 'package:amazon_client/features/account/screens/account_screen.dart';
+import 'package:amazon_client/features/cart/screens/cart_user.dart';
 import 'package:amazon_client/features/home/screens/home_screen.dart';
 import 'package:amazon_client/features/home/service/home_services.dart';
 import 'package:amazon_client/providers/cart_provider.dart';
@@ -31,9 +32,7 @@ class _BottomBarState extends State<BottomBar> {
   List<Widget> allPage = [
     HomePage(),
     AccountScreen(),
-    Center(
-      child: Text("Cart"),
-    ),
+    MyCart()
   ];
 
   @override

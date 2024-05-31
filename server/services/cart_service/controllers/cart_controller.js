@@ -27,6 +27,7 @@ const updateCart = async (req, res, next) => {
       await userCart.save();
     }
 
+
     res.status(200).json(userCart);
   } catch (error) {
     next(error);
@@ -45,7 +46,6 @@ const getCart = async (req, res, next) => {
       productCart = await  UserCart.create({ user_id: userId, allProduct: [] });
     }
 
-    
 
     res.status(200).json(productCart)
   } catch (error) {
@@ -71,4 +71,35 @@ const deleteProduct = async (req, res, next) => {
     }
 }
 
-module.exports = { updateCart, getCart, deleteProduct };
+const inanddeProduct = async (req, res, next)=>{
+  try {
+    let {userId, productId, symbol} = req.body
+    let productCart = await UserCart.findOne({user_id:userId}).populate("allProduct.product_id")
+    newProductCart = productCart.allProduct 
+    index = newProductCart.findIndex((e)=>{
+      return  e.product_id._id.toString()==productId
+    });
+
+    if(symbol == "-"){
+
+      newProductCart[index].quantity == 1 ?
+      newProductCart.splice(index,1)
+      :newProductCart[index].quantity--;
+    }else{
+      newProductCart[index].quantity++ 
+    }
+
+
+    productCart.allProduct = newProductCart
+    await productCart.save()
+
+    res.status(200).json(productCart)
+  } catch (error) {
+    console.log(error.message);
+    next(error)
+  }
+}
+
+module.exports = { updateCart, getCart, deleteProduct, inanddeProduct };
+
+

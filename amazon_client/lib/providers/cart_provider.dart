@@ -7,13 +7,12 @@ class CartProvider extends ChangeNotifier{
 
   CartProduct _cartProduct = CartProduct(id: "", allProduct: [], user_id: "");
 
-
   get catProduct => _cartProduct;
 
   void setCart(String cartJson){
     _cartProduct = CartProduct.fromJson(cartJson);
     notifyListeners();
-  }
+  } 
 
   void setCartModel(CartProduct cartProducts){
     _cartProduct = cartProducts;

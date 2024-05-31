@@ -27,7 +27,7 @@ class CartProduct {
   factory CartProduct.fromMap(Map<String, dynamic> map) {
     return CartProduct(
       id: map['_id'] as String,
-      allProduct: (map['allProduct'] as List<dynamic>).cast<Map<String,dynamic>>().toList(),
+      allProduct: (map['allProduct'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList(),
       user_id: map['user_id'] as String,
     );
   }

@@ -4,11 +4,14 @@ import 'package:amazon_client/common/widgets/star_common.dart';
 import 'package:amazon_client/constants/global_variables.dart';
 import 'package:amazon_client/features/Search/screens/search_screen.dart';
 import 'package:amazon_client/features/product/service/product_service.dart';
+import 'package:amazon_client/common/widgets/in_de_button.dart';
 import 'package:amazon_client/models/product.dart';
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -23,6 +26,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   ProductService _productService = ProductService();
   double rating = 1;
+  double count = 1;
 
 //Pull Rating of product
   @override
@@ -129,13 +133,49 @@ class _ProductScreenState extends State<ProductScreen> {
                     const SizedBox(
                       height: 35,
                     ),
+
+                    //Increment and Decrement Counter
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      //Decrement
+                      GestureDetector(onTap: (){
+                        setState(() {
+                          count = count==0 ? 0 : count-1;
+                        });
+                      } ,child: InAndDeButton(symbol: "-")),
+                      const SizedBox(width: 20,),
+
+                      AnimatedFlipCounter(
+                      duration: Duration(milliseconds: 500),
+                      value: count,
+                      textStyle: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.deepOrangeAccent
+                      ),
+                      ),
+
+                      //Increment
+                      const SizedBox(width: 20,),
+                      GestureDetector(onTap: (){
+                        setState(() {
+                          count++;
+                        });
+                      },child: InAndDeButton(symbol: "+")),
+                      ],
+                    ),
+
+                    const SizedBox(
+                      height: 35,
+                    ),
                 
                     MyButtonCustom(
                         text: "Add to Cart",
                         textColor: Colors.black,
                         color: Colors.yellow.shade600,
                         onPressedButton: () {
-                          ProductService.addProductInCart(context: context, productId: widget.product.id!, quantity: 1);
+                          ProductService.addProductInCart(context: context, productId: widget.product.id!, quantity: count.toInt());
                         }),
                 
                     //Diliver

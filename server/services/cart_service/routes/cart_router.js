@@ -1,5 +1,5 @@
 const express = require("express")
-const { getCart, updateCart, deleteProduct } = require("../controllers/cart_controller")
+const { getCart, updateCart, deleteProduct, inanddeProduct } = require("../controllers/cart_controller")
 const CartRouter = express.Router()
 
 
@@ -10,6 +10,10 @@ CartRouter.route("/cartofuser")
 CartRouter.route("/addcartofuser")
 //Add product in cart
 .post(updateCart)
+
+CartRouter.route("/increandecre")
+//Add product in cart
+.post(inanddeProduct)
 
 
 CartRouter.route("/deletecartofuser")

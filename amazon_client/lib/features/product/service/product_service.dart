@@ -32,9 +32,6 @@ class ProductService {
       });
 
     httpErrorHandle(response: res, context: context, onSuccess: (){
-        cartProvider.setCart(res.body);
-        print(res.body);
-        print(cartProvider.catProduct.allProduct.length);
         showSnackBar(context, "Add product in cart success");
     });
 
