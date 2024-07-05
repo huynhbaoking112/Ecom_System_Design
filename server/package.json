@@ -21,6 +21,7 @@
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.3",
+    "nodemailer": "^6.9.14",
     "redis": "^4.6.13"
   }
 }

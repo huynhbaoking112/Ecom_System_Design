@@ -1,6 +1,7 @@
 const sendMessage = require("../../../shared/common/sendmessage")
 const { getConnect } = require("../../../shared/config/create_exchange_channel")
 const Rating = require("../../../shared/models/ratings_model")
+const {handleErrorLog} = require("../../../shared/common/write_log_if_err")
 
 const updateRatings = async (req, res, next) =>{
  try {
@@ -21,7 +22,7 @@ const updateRatings = async (req, res, next) =>{
     // res.status(200).json(newRating)
     res.status(200).json()
  } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
  }   
 }
 

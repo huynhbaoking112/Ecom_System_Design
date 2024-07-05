@@ -22,6 +22,8 @@ initRedis()
 //Kết nối RabbitMQ và khởi tạo consumer
 const receivedHandleRedis = require("./config/config_service")
 receivedHandleRedis({exchangeName:'topic_update_datas', exchangeType:'topic', bindingKey: "update.#"})
+const { createConnect } = require("../../shared/config/create_exchange_channel")
+createConnect({exchangeName:"error_log", exchangeType:"fanout"})
 
 
 

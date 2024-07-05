@@ -9,7 +9,7 @@ app.use(express.json())
 
 //connect and create channel RabbitMQ 
 const { createConnect } = require("../../shared/config/create_exchange_channel")
-createConnect({exchangeName:'topic_update_ratings',exchangeType:'topic'})
+createConnect({exchangeName:'topic_update_ratings',exchangeType:'topic'},{exchangeName:"error_log", exchangeType:"fanout"})
 
 //connect Database
 const ConnectDB = require("../../shared/config/connect_db")

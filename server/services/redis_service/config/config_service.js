@@ -2,6 +2,7 @@ const amqp = require("amqplib")
 const {getRedis} = require("../../../shared/config/redis_connect")
 const amqplib_url = "amqp://user:password@localhost:5672";
 const Product = require("../../../shared/models/product_model");
+const { handleErrorLog } = require("../../../shared/common/write_log_if_err");
 
 
 //Kết nối đến RabbitMQ server
@@ -97,7 +98,7 @@ const receivedHandleRedis = async (...args)=>{
     })
 
     } catch (error) {
-        console.log(error);
+        handleErrorLog(error)
     }
 }
 

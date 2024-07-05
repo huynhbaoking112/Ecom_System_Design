@@ -20,7 +20,7 @@ const addProduct = async (req, res, next) => {
         res.status(200).json(product)
 
     } catch (error) {
-       next(error)
+        handleErrorLog(error, next)
     }
 }
 
@@ -41,7 +41,7 @@ const getProduct = async (req, res, next) =>{
         res.status(200).json(JSON.parse(data))
         
     } catch (error) {
-        next(error)
+        handleErrorLog(error, next)
     }
 }
 
@@ -63,7 +63,7 @@ const deleteProduct = async (req, res, next) => {
         //Trả về client
         res.status(200).json({message: "Deleted Successfuly"})
     } catch (error) {
-        next(error)
+        handleErrorLog(error, next)
     }
 }
 

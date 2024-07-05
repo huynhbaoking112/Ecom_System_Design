@@ -11,6 +11,7 @@ const createConnect = async(...args)=>{
     try {
     
         const client = await amqp.connect(amqplib_url)
+     
 
         //tạo channel
         const channel = await client.createChannel()

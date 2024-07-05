@@ -5,6 +5,7 @@ const { getElastic } = require("../../shared/config/elasticsearch");
 const { getRedis } = require("../../shared/config/redis_connect");
 const Product = require("../../shared/models/product_model");
 const UserCart = require("../../shared/models/user_cart_model");
+const { handleErrorLog } = require("../../shared/common/write_log_if_err");
 
 const getProductWithCategory = async (req, res, next) => {
   const { category } = req.query;
@@ -35,7 +36,7 @@ const getProductWithCategory = async (req, res, next) => {
     let categoryProduct = allProduct.filter((e) => e.category == category);
     return res.status(200).json(categoryProduct);
   } catch (error) {
-    next(error);
+    handleErrorLog(error, next)
   }
 };
 
@@ -85,7 +86,7 @@ const getProductWithSearchKey = async (req, res, next) => {
 
     res.status(200).json(allProductWithSearch.hits.hits);
   } catch (error) {
-    next(error);
+    handleErrorLog(error, next)
   }
 };
 
@@ -120,10 +121,13 @@ const getRatingProductWithId = async (req, res, next) => {
     });
     res.status(200).json(allProductWithSearch.aggregations.avg_ratings)
   } catch (error) {
-    next(error);
+    handleErrorLog(error, next)
   }
 };
 
+
+
+//XU LI TAI PRODUCT_SERVICE
 const postRatingWithId =async (req, res, next)=>{
   try {
 
@@ -131,10 +135,15 @@ const postRatingWithId =async (req, res, next)=>{
     const result = await axios.post("http://localhost:7000/api/updateRating",req.body)
     res.status(result.status).json(result.data)
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 }
 
+
+
+
+
+// XU LI TAI CART_SERVICE
 
 const addProductToCart =  async(req, res, next) => {
   try {
@@ -146,7 +155,7 @@ const addProductToCart =  async(req, res, next) => {
     })
     res.status(result.status).json(result.data)
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 }
 
@@ -157,7 +166,7 @@ const getProductInCart = async (req, res, next)=>{
     })
     res.status(result.status).json(result.data)
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 }
 
@@ -171,7 +180,7 @@ const deleteProduct =  async(req, res, next) => {
     })
     res.status(result.status).json(result.data)
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 }
 
@@ -185,10 +194,10 @@ const inanddeProduct = async (req, res, next)=>{
     })
     res.status(result.status).json(result.data)
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 }
-
+//---------------------------------------------------------
 
 
 module.exports = {

@@ -31,13 +31,7 @@ class _MyCartState extends State<MyCart> {
     CartProvider cartProvider =
         Provider.of<CartProvider>(context, listen: true);
         double sum =0 ;
-    //  sum = cartProvider.catProduct.allProduct.reduce((sum,e)=> sum + (e["quantity"].toInt()*(e['product_id'] as Map<String, dynamic>)['price'].toDouble()));
-    // double sum = 0;
-    // cartProvider.catProduct.allProduct.forEach((e) => {
-    //       sum += (((e['product_id'] as Map<String, dynamic>)["price"])
-    //               .toDouble() *
-    //           ((e['product_id'] as Map<String, dynamic>)["quantity"]).toInt())
-    //     });
+        cartProvider.catProduct.allProduct.map((e)=>sum+=e['quantity']*e["product_id"]["price"] as int ).toList();
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

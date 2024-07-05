@@ -82,7 +82,7 @@ const receivedHandleElatic = async (...args) => {
       }
     );
   } catch (error) {
-    console.log(error);
+    handleErrorLog(error)
   }
 };
 

@@ -1,6 +1,7 @@
 const CustomError = require("../../shared/common/handle_error");
 const { hashPassword, comparePassword } = require("../../shared/common/handle_password");
 const { generateToken } = require("../../shared/common/handle_token");
+const { handleErrorLog } = require("../../shared/common/write_log_if_err");
 const User = require("../../shared/models/user_model");
 
 const signUpUser = async (req, res, next) => {
@@ -25,7 +26,7 @@ const signUpUser = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 };
 
@@ -55,7 +56,7 @@ const signInUser = async (req, res, next) => {
     //Tra ve client
     res.status(200).json({ token, ...user._doc });
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 };
 
@@ -63,7 +64,7 @@ const getInfor = async (req, res, next) => {
   try {
     res.status(200).json(req.user);
   } catch (error) {
-    next(error)
+    handleErrorLog(error, next)
   }
 };
 

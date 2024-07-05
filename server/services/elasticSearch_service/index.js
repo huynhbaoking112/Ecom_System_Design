@@ -22,7 +22,8 @@ connectElastic()
 //Kết nối RabbitMQ và khởi tạo consumer
 const receivedHandleElatic = require("./config/config_service")
 receivedHandleElatic({exchangeName:"topic_update_datas", exchangeType:"topic", bindingKey: "update.*"},{exchangeName:"topic_update_ratings", exchangeType:"topic", bindingKey: "elastic.*"})
-
+const { createConnect } = require("../../shared/config/create_exchange_channel")
+createConnect({exchangeName:"error_log", exchangeType:"fanout"})
 
 
 app.listen(5000, ()=>{

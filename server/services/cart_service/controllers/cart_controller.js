@@ -1,5 +1,6 @@
 const UserCart = require("../../../shared/models/user_cart_model");
 const Product = require("../../../shared/models/product_model");
+const {handleErrorLog} = require("../../../shared/common/write_log_if_err")
 
 const updateCart = async (req, res, next) => {
   try {
@@ -30,7 +31,7 @@ const updateCart = async (req, res, next) => {
 
     res.status(200).json(userCart);
   } catch (error) {
-    next(error);
+    handleErrorLog(error, next)
   }
 };
 
@@ -49,7 +50,7 @@ const getCart = async (req, res, next) => {
 
     res.status(200).json(productCart)
   } catch (error) {
-    next(error);
+    handleErrorLog(error, next)
   }
 };
 
@@ -66,8 +67,7 @@ const deleteProduct = async (req, res, next) => {
 
         res.status(200).json(productCart)
     } catch (error) {
-        console.log(error.message);
-        next(error)
+      handleErrorLog(error, next)
     }
 }
 
@@ -95,8 +95,7 @@ const inanddeProduct = async (req, res, next)=>{
 
     res.status(200).json(productCart)
   } catch (error) {
-    console.log(error.message);
-    next(error)
+    handleErrorLog(error, next)
   }
 }
 
