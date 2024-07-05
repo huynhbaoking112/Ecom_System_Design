@@ -39,7 +39,7 @@ const signInUser = async (req, res, next) => {
 
     //neu khong ton tai
     if (!user) {
-      return next("Email or password is incorrect", 404);
+      return next(new CustomError("Email or password is incorrect", 404));
     }
 
     //Xu li password
@@ -47,7 +47,7 @@ const signInUser = async (req, res, next) => {
 
     //Neu password khong match
     if (!match) {
-      return next("Email or password is incorrect", 404);
+      return next(new CustomError("Email or password is incorrect", 404));
     }
 
     //provider token

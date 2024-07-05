@@ -20,19 +20,24 @@ class AuthService {
       required String password,
       required BuildContext context}) async {
     try {
+
       http.Response res = await http.post(Uri.parse('$uri/user/api/signin'),
           body: json.encode({'email': email, 'password': password}),
           headers: <String, String>{'Content-Type': 'application/json'});
+
 
       httpErrorHandle(
           response: res,
           context: context,
           onSuccess: () async {
+
             SharedPreferences prefs = await SharedPreferences.getInstance();
             Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+
             await prefs.setString(
                 'x-auth-token', json.decode(res.body)['token']);
             Navigator.pushNamed(context, BottomBar.routeName);
+
           });
     } catch (e) {
       showSnackBar(context, e.toString());

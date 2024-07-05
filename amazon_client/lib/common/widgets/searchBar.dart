@@ -52,7 +52,7 @@ class _SearchBarTitleState extends State<SearchBarTitle> {
                       onChanged: (value) {
                         _debounce?.cancel();
                         if (searchController.text.isNotEmpty) {
-                          _debounce = Timer(Duration(microseconds: 500), () {
+                          _debounce = Timer(Duration(microseconds: 100), () {
                             _handleSearch(value);
                           });
                         } else {

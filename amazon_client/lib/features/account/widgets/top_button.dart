@@ -1,8 +1,9 @@
+import 'package:amazon_client/features/account/services/account_service.dart';
 import 'package:amazon_client/features/account/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
 class TopButton extends StatelessWidget {
-  const TopButton({super.key});
+  const  TopButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,9 @@ class TopButton extends StatelessWidget {
         //Log Out and Your Wish List
         Row(
           children: [
-            ButtonWidget(text: "Log Out", onTap: (){}),
+            ButtonWidget(text: "Log Out", onTap: (){
+              AccountService.signOutUser(context: context);
+            }),
             ButtonWidget(text: "Your Wish List", onTap: (){}),
           ],
         )

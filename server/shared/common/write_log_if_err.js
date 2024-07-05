@@ -6,7 +6,7 @@ const handleErrorLog = async(error, next) => {
     await sendMessage({
         channel,
         exchangeName:"error_log",
-        message:JSON.stringify({typeof:"errorOfApp", data:err.message}),
+        message:JSON.stringify({typeof:"errorOfApp", data:error.message}),
         route_key:""
       })
       next?next(error):null;

@@ -14,6 +14,11 @@ class CartProvider extends ChangeNotifier{
     notifyListeners();
   } 
 
+  void resetCart(){
+    _cartProduct = CartProduct(id: "", allProduct: [], user_id: "");
+    notifyListeners();
+  }
+
   void setCartModel(CartProduct cartProducts){
     _cartProduct = cartProducts;
     notifyListeners();

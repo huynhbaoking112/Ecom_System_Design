@@ -45,6 +45,7 @@ const getProductWithSearchKey = async (req, res, next) => {
 
   try {
     const { productElastic } = getElastic();
+
     const allProductWithSearch = await productElastic.search({
       index: "allpost",
       body: {
@@ -62,27 +63,29 @@ const getProductWithSearchKey = async (req, res, next) => {
                   category: `*${name}*`,
                 },
               },
-              // {
-              //   "match": {
-              //     "name": {
-              //       "query": "k",
-              //       "fuzziness": "AUTO"
-              //     }
-              //   }
-              // },
-              // {
-              //   "match": {
-              //     "category": {
-              //       "query": "mobiles",
-              //       "fuzziness": "AUTO"
-              //     }
-              //   }
-              // }
+              {
+                "match": {
+                  "name": {
+                    "query": name,
+                    "fuzziness": "AUTO"
+                  }
+                }
+              },
+              {
+                "match": {
+                  "category": {
+                    "query": name,
+                    "fuzziness": "AUTO"
+                  }
+                }
+              }
             ],
           },
         },
       },
     });
+
+
 
     res.status(200).json(allProductWithSearch.hits.hits);
   } catch (error) {
@@ -124,7 +127,6 @@ const getRatingProductWithId = async (req, res, next) => {
     handleErrorLog(error, next)
   }
 };
-
 
 
 //XU LI TAI PRODUCT_SERVICE

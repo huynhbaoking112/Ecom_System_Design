@@ -40,6 +40,8 @@ class _SearchScreenState extends State<SearchScreen> {
     allProduct = await searchService.getProductWithSearchKey(
         searchKey: widget.searchKey, context: context);
     setState(() {});
+    print(widget.searchKey);
+    print(allProduct);
   }
 
   @override
