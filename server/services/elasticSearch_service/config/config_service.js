@@ -58,7 +58,7 @@ const receivedHandleElatic = async (...args) => {
 
         //Xóa product
         else if (typeMess == "deleteProduct") {
-          await deleteDoc(JSON.parse(data));
+          await deleteDoc(JSON.parse(data)._id.toString());
           channel.ack(msg);
           console.log("Delete product success from Elastic service");
         }

@@ -20,6 +20,9 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+
+
+
   //Search Controller
   TextEditingController searchController = TextEditingController();
 
@@ -29,19 +32,69 @@ class _SearchScreenState extends State<SearchScreen> {
   //Service
   SearchService searchService = SearchService();
 
+
+  
+  //--- Inifinite Scroll loading new Data
+
+  //page search
+  int page = 1;
+
+  bool isLoading = false;
+
+  bool fullData = false;
+
+  ScrollController  _scrollController = ScrollController();
+    
+  getNewData() async {
+
+    if(fullData){
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+     List<Product>? newData = await searchService.getProductWithSearchKey(searchKey: widget.searchKey, context: context, page: ++page);
+
+     if(newData.isNotEmpty){
+      allProduct?.addAll(newData);
+     }
+    
+    setState(() {
+      isLoading = false;
+      fullData = newData.isEmpty;
+    });
+
+  }
+
+
+
+//------------------------------------
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDataAfterSearch();
+    _scrollController.addListener(() {
+      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent && !isLoading){
+        getNewData();
+      }
+    });
   }
 
   void getDataAfterSearch() async {
     allProduct = await searchService.getProductWithSearchKey(
-        searchKey: widget.searchKey, context: context);
+        searchKey: widget.searchKey, context: context, page: page);
     setState(() {});
-    print(widget.searchKey);
-    print(allProduct);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -60,7 +113,10 @@ class _SearchScreenState extends State<SearchScreen> {
       
             //AllProdcuct with key search
             allProduct==null ? Center(child: Loader())  :Expanded(
-              child: GridView.builder(
+              child: Stack(
+                children: [
+                  GridView.builder(
+                controller: _scrollController,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisExtent: 150,
                       mainAxisSpacing: 10,
@@ -119,6 +175,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     );
                   },),
+                  if(isLoading)...[
+                    Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Container(
+                      height: 80,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  )
+                  ]
+                ],
+              )
             )
           ],
         ),

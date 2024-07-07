@@ -16,7 +16,7 @@ class SearchBarService {
     List<Product> allProduct = [];
     try {
 
-      http.Response res = await http.get(Uri.parse("$uri/api/user/search/"+searchKey), headers: {
+      http.Response res = await http.get(Uri.parse("$uri/api/user/search/"+searchKey+"?page=1"), headers: {
         'Content-Type': "application/json",
         "x-auth-token" : userProvider.user.token 
       } );

@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+const { default: axios, all } = require("axios");
 const sendMessage = require("../../shared/common/sendmessage");
 const { getConnect } = require("../../shared/config/create_exchange_channel");
 const { getElastic } = require("../../shared/config/elasticsearch");
@@ -9,39 +9,78 @@ const { handleErrorLog } = require("../../shared/common/write_log_if_err");
 
 const getProductWithCategory = async (req, res, next) => {
   const { category } = req.query;
+  // try {
+  //   // Dùng redis để lấy
+  //   const { productRedis } = getRedis();
+  //   //Xem redis
+  //   const productJson = await productRedis.get("allPost");
+
+  //   let allProduct = [];
+
+  //   //Nếu redis không tồn tại, cung cấp data cho redis
+  //   if (!productJson) {
+  //     let channel = getConnect();
+  //     allProduct = await Product.find();
+  //     await sendMessage({
+  //       channel,
+  //       exchangeName: "topic_update_datas",
+  //       message: JSON.stringify({ typeMess: "setProduct" }),
+  //       route_key: "update.set.redis",
+  //     });
+  //   }
+  //   // Nếu redis tồn tại lấy data từ redis
+  //   else {
+  //     allProduct = JSON.parse(productJson);
+  //   }
+  //   // Lọc category trả về cho client
+  //   let categoryProduct = allProduct.filter((e) => e.category == category);
+  //   return res.status(200).json(categoryProduct);
+  // } catch (error) {
+  //   handleErrorLog(error, next)
+  // }
+
   try {
-    // Dùng redis để lấy
-    const { productRedis } = getRedis();
-    //Xem redis
-    const productJson = await productRedis.get("allPost");
+      //Dùng redis để lấy
+      const {productRedis} = getRedis()
 
-    let allProduct = [];
+      //Xem redis
+      const productJson = await productRedis.get(category);
 
-    //Nếu redis không tồn tại, cung cấp data cho redis
-    if (!productJson) {
-      let channel = getConnect();
-      allProduct = await Product.find();
-      await sendMessage({
-        channel,
-        exchangeName: "topic_update_datas",
-        message: JSON.stringify({ typeMess: "setProduct" }),
-        route_key: "update.set.redis",
-      });
-    }
-    // Nếu redis tồn tại lấy data từ redis
-    else {
-      allProduct = JSON.parse(productJson);
-    }
-    // Lọc category trả về cho client
-    let categoryProduct = allProduct.filter((e) => e.category == category);
-    return res.status(200).json(categoryProduct);
+      let allProductWithCategory = [];
+
+      //Nếu redis không tồn tại, cung cấp data cho redis
+      if(!productJson){
+        let channel = getConnect();
+        allProductWithCategory = await Product.find({category})
+        
+
+        //update redis
+        await sendMessage({
+          channel,
+          exchangeName: "topic_update_datas",
+          message: JSON.stringify({typeMess:"setCategory", data: category}),
+          route_key:"update.set.redis"
+        })
+      }
+      //Nếu redis tồn tại lấy data từ redis
+      else{
+        allProductWithCategory = JSON.parse(productJson);
+      }
+
+      //trả về cho client 
+      return res.status(200).json(allProductWithCategory)
+
+
+
   } catch (error) {
-    handleErrorLog(error, next)
+    handleErrorLog(error, next);
   }
 };
 
 const getProductWithSearchKey = async (req, res, next) => {
   const { name } = req.params;
+  const page = req.query.page??=1
+
 
   try {
     const { productElastic } = getElastic();
@@ -50,6 +89,7 @@ const getProductWithSearchKey = async (req, res, next) => {
       index: "allpost",
       body: {
         size: 10,
+        from:10*(page-1),
         query: {
           bool: {
             should: [

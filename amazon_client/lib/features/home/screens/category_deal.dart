@@ -36,7 +36,6 @@ class _CategoryDealState extends State<CategoryDeal> {
     allProductWithCategory = await homeService.getProductWithCateGory(
         context: context, category: widget.category);
     setState(() {});
-    print(allProductWithCategory!.length);
   }
 
   @override

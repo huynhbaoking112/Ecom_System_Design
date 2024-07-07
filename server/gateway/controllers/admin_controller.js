@@ -51,13 +51,12 @@ const deleteProduct = async (req, res, next) => {
 
         //Xóa productId
         const {id} = req.body
-        await Product.findByIdAndDelete(id)
-
+        const a = await Product.findByIdAndDelete(id)
         //Cập nhật redis
-        let channel = getConnect()
-        await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"deleteProduct", data:JSON.stringify(id)}), route_key:"update.delete"})
-        
         //Cập nhật elasticSearch
+        let channel = getConnect()
+        await sendMessage({channel, exchangeName:"topic_update_datas",message:JSON.stringify({typeMess:"deleteProduct", data:JSON.stringify(a)}), route_key:"update.delete"})
+        
 
 
         //Trả về client
