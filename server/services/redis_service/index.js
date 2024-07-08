@@ -17,6 +17,9 @@ ConnectDB();
 // Kết nối redis
 const { initRedis } = require("../../shared/config/redis_connect")
 initRedis()
+//ElasticSearch
+const {connectElastic} = require("../../shared/config/elasticsearch")
+connectElastic()
 
 
 //Kết nối RabbitMQ và khởi tạo consumer

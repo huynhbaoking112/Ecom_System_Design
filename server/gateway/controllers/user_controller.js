@@ -9,35 +9,7 @@ const { handleErrorLog } = require("../../shared/common/write_log_if_err");
 
 const getProductWithCategory = async (req, res, next) => {
   const { category } = req.query;
-  // try {
-  //   // Dùng redis để lấy
-  //   const { productRedis } = getRedis();
-  //   //Xem redis
-  //   const productJson = await productRedis.get("allPost");
 
-  //   let allProduct = [];
-
-  //   //Nếu redis không tồn tại, cung cấp data cho redis
-  //   if (!productJson) {
-  //     let channel = getConnect();
-  //     allProduct = await Product.find();
-  //     await sendMessage({
-  //       channel,
-  //       exchangeName: "topic_update_datas",
-  //       message: JSON.stringify({ typeMess: "setProduct" }),
-  //       route_key: "update.set.redis",
-  //     });
-  //   }
-  //   // Nếu redis tồn tại lấy data từ redis
-  //   else {
-  //     allProduct = JSON.parse(productJson);
-  //   }
-  //   // Lọc category trả về cho client
-  //   let categoryProduct = allProduct.filter((e) => e.category == category);
-  //   return res.status(200).json(categoryProduct);
-  // } catch (error) {
-  //   handleErrorLog(error, next)
-  // }
 
   try {
       //Dùng redis để lấy
@@ -51,8 +23,22 @@ const getProductWithCategory = async (req, res, next) => {
       //Nếu redis không tồn tại, cung cấp data cho redis
       if(!productJson){
         let channel = getConnect();
-        allProductWithCategory = await Product.find({category})
         
+        //LẤY TỪ DB
+        // allProductWithCategory = await Product.find({category})
+
+        //Lấy từ elasticSearch
+        const {productElastic} = getElastic()
+        allProductWithCategory = await productElastic.search({
+          index:"allpost",
+          body: {
+            query: {
+              "match": {
+                "category": category
+              }
+            }
+          }
+        })
 
         //update redis
         await sendMessage({
@@ -68,7 +54,7 @@ const getProductWithCategory = async (req, res, next) => {
       }
 
       //trả về cho client 
-      return res.status(200).json(allProductWithCategory)
+      return res.status(200).json(allProductWithCategory.hits.hits)
 
 
 

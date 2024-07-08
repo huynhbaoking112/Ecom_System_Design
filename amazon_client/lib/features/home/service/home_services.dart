@@ -30,7 +30,7 @@ class HomeService {
           context: context,
           onSuccess: () {
             jsonDecode(res.body).forEach(
-                (e) => allProduct.add(Product.fromJson(jsonEncode(e))));
+                (e) => allProduct.add(Product.fromJsonElastic(jsonEncode(e))));
             showSnackBar(context, "All product with category: $category");
           });
     } catch (e) {

@@ -12,8 +12,8 @@ const userRouter = express.Router();
 
 
 //get product category sử dụng query -  product?category=...
-userRouter.route("/product").get(handleToken ,getProductWithCategory)
-// userRouter.route("/product").get(getProductWithCategory)
+// userRouter.route("/product").get(handleToken ,getProductWithCategory)
+userRouter.route("/product").get(getProductWithCategory)
 
 
 //Get product with search key ( Sử dụng mongoose không dùng redis về nó có hỗ trợ biểu thức chính quy - Sau này nâng cấp elSearch thì áp dụng eLsearch )

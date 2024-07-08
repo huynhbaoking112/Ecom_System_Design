@@ -3,6 +3,7 @@ const {getRedis} = require("../../../shared/config/redis_connect")
 const amqplib_url = "amqp://user:password@localhost:5672";
 const Product = require("../../../shared/models/product_model");
 const { handleErrorLog } = require("../../../shared/common/write_log_if_err");
+const { getElastic } = require("../../../shared/config/elasticsearch");
 
 
 //Kết nối đến RabbitMQ server
@@ -83,7 +84,18 @@ const receivedHandleRedis = async (...args)=>{
 
         //Set category trên redis
         else if(typeMess == "setCategory"){
-            let allProductWithCategory =  await Product.find({category:data})
+            // let allProductWithCategory =  await Product.find({category:data})
+            const {productElastic} = getElastic()
+            let allProductWithCategory = await productElastic.search({
+              index:"allpost",
+              body: {
+                query: {
+                  "match": {
+                    "category": "Mobiles"
+                  }
+                }
+              }
+            })
             await productRedis.setEx(data, 3600, JSON.stringify(allProductWithCategory))
             channel.ack(msg)
             console.log("Set category success from Redis Service");   
