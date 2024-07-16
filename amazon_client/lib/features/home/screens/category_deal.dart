@@ -33,7 +33,7 @@ class _CategoryDealState extends State<CategoryDeal> {
 
   // Get Data with api
   void getData() async {
-    allProductWithCategory = await homeService.getProductWithCateGory(
+    allProductWithCategory = await homeService.getPr oductWithCateGory(
         context: context, category: widget.category);
     setState(() {});
   }

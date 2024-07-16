@@ -3,7 +3,7 @@ const { getElastic } = require("../../../shared/config/elasticsearch");
 const addDoc = async (product) => {
   try {
     const { productElastic } = getElastic();
-    await productElastic.index({
+   await productElastic.index({
       index: "allpost",
       id: product._id.toString(),
       body: {

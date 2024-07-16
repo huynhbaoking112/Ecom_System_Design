@@ -60,24 +60,11 @@ const receivedHandleRedis = async (...args)=>{
                 console.log("Set product success from Redis service");
             }
 
-            // //Thêm vào Key Category
-            let allProductWithCategory = await productRedis.get(JSON.parse(data).category)
+            // Xóa key  Category
+             await productRedis.del(JSON.parse(data).category)
+            console.log("Delete category key success from Redis service");
 
             
-            // //Nếu tồn tại Key category
-            if(allProductWithCategory){
-                allProductWithCategory = JSON.parse(allProductWithCategory)
-                allProductWithCategory.push(JSON.parse(data))
-                await productRedis.setEx(JSON.parse(data).category, 3600, JSON.stringify(allProductWithCategory))
-                console.log("Add category success from Redis service");
-            }
-            // //Nếu không tồn tại Key category
-            else{
-                const productAddCategory = await Product.find({category:JSON.parse(data).category})
-                await productRedis.setEx(JSON.parse(data).category, 3600, JSON.stringify(productAddCategory))
-                console.log("Set category success from Redis service");
-            }
-
             channel.ack(msg)
 
         }
@@ -88,6 +75,7 @@ const receivedHandleRedis = async (...args)=>{
             const {productElastic} = getElastic()
             let allProductWithCategory = await productElastic.search({
               index:"allpost",
+              size:1000,
               body: {
                 query: {
                   "match": {
@@ -114,8 +102,6 @@ const receivedHandleRedis = async (...args)=>{
 
             //Xóa trên allPost
             let allProduct = await productRedis.get("allPost")
-            console.log(JSON.parse(data)._id.toString());
-            console.log(JSON.parse(data).category.toString());
             if(allProduct){
                 allProducts =  JSON.parse(allProduct);
                 newAllProducts = allProducts.filter((e)=>e._id!=JSON.parse(data)._id.toString())
@@ -127,23 +113,8 @@ const receivedHandleRedis = async (...args)=>{
                 console.log("Set product success from Redis Service");               
             }
 
-            //Xóa trên category
-            let allProductWithCategory = await productRedis.get(JSON.parse(data).category.toString())
-            //Nếu category đã có trên redis
-            if(allProductWithCategory){
-                allProductWithCategory = JSON.parse(allProductWithCategory)
-                newallProductWithCategory = allProductWithCategory.filter((e)=>e._id!=JSON.parse(data)._id.toString())
-                await productRedis.setEx(JSON.parse(data).category.toString(), 3600, JSON.stringify(newallProductWithCategory))
-                console.log("Delete category success from Redis Service");   
-            }
-            //Nếu chưa tồn tại trên redis
-            else{
-                let allProductWithCategory = await Product.find({category:JSON.parse(data).category.toString()})
-                await productRedis.setEx(JSON.parse(data).category.toString(), 3600, JSON.stringify(allProductWithCategory))
-                console.log("Set category success from Redis Service");  
-            }
-
-
+            //Xóa key category
+            await productRedis.del(JSON.parse(data).category.toString())
             channel.ack(msg)
         }
         //Xử lí message lạ
@@ -159,6 +130,7 @@ const receivedHandleRedis = async (...args)=>{
     })
 
     } catch (error) {
+        channel.ack(msg)
         handleErrorLog(error)
     }
 }

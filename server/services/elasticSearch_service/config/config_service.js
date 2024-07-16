@@ -82,6 +82,7 @@ const receivedHandleElatic = async (...args) => {
       }
     );
   } catch (error) {
+    channel.ack(msg);
     handleErrorLog(error)
   }
 };

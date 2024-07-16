@@ -32,6 +32,7 @@ const getProductWithCategory = async (req, res, next) => {
         allProductWithCategory = await productElastic.search({
           index:"allpost",
           body: {
+            size:1000,
             query: {
               "match": {
                 "category": category
